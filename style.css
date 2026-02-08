@@ -78,7 +78,7 @@ body {
 	background-color: #ffffff;
 	border: 2px solid #e6e6e6;
 	border-radius: 10px;
-	padding: 24px 20px 24px 24px;
+	padding: 24px 20px 60px 24px;
 	min-height: 180px;
 	max-height: 300px;
 	min-width: 325px;
@@ -90,12 +90,23 @@ body {
 
 .timeline-card h2 {
 	/* Tighten space below the date */
-	margin: 0 0 4px;
+	margin: 0;
 }
 
 .timeline-card h3 {
 	/* Tighten space above the heading */
-	margin: 0 0 8px;
+	margin: 0;
+}
+
+.timeline-image {
+	/* Keep card images neat and consistent */
+	width: 200px;
+	max-width: 200px;
+	height: 200px;
+	border-radius: 8px;
+	margin: 6px auto 12px;
+	display: block;
+	object-fit: cover;
 }
 
 .timeline-card p {
@@ -107,14 +118,14 @@ body {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: #6aa8e6;
+	background-color: rgba(106, 168, 230, 0.9);
 	color: #ffffff;
-	padding: 4px 12px 12px;
+	padding: 40px;
 	border-radius: 10px;
 	line-height: 1.4;
 	text-align: center;
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: center;
 	transition: opacity 0.6s ease;
 	overflow: auto;
@@ -192,30 +203,13 @@ body {
 		/* Show details on hover (large screens) */
 		opacity: 1;
 		visibility: visible;
-		background-color: #5aa4e6;
-		color: #ffffff;
-		font-size: 18px;
-	}
-
-	.timeline-card.is-active p {
-		/* Show details on click (large screens) */
-		opacity: 1;
-		visibility: visible;
-		background-color: #5aa4e6;
+		background-color: rgba(90, 164, 230, 0.9);
 		color: #ffffff;
 		font-size: 18px;
 	}
 
 	.timeline-card:hover {
 		/* Shade the card blue on hover (large screens) */
-		background-color: #5aa4e6;
-		border-color: #5aa4e6;
-		transform: scale(1.03);
-		box-shadow: 0 10px 22px rgba(11, 95, 165, 0.35);
-	}
-
-	.timeline-card.is-active {
-		/* Shade the card blue on click (large screens) */
 		background-color: #5aa4e6;
 		border-color: #5aa4e6;
 		transform: scale(1.03);
@@ -251,7 +245,7 @@ body {
 		/* Show details on click (small screens) */
 		opacity: 1;
 		visibility: visible;
-		background-color: #5aa4e6;
+		background-color: rgba(90, 164, 230, 0.9);
 		color: #ffffff;
 		font-size: 24px;
 	}
