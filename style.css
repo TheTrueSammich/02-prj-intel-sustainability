@@ -2,7 +2,8 @@
 
 /* Page background */
 body {
-	background-color: #0b5fa5;
+	background-color: #f2f6fb;
+	margin: 0;
 }
 
 /* Hero styles */
@@ -11,6 +12,7 @@ body {
 	text-align: center;
 	color: #ffffff;
 	font-weight: 700;
+	background-color: #0b5fa5;
 }
 
 .hero img {
@@ -31,22 +33,201 @@ body {
 }
 
 /* Timeline styles */
-.timeline {
-	/* Make the cards line up in one row */
-	display: flex;
-	gap: 20px;
+.timeline-box {
+	/* Light-blue box above the timeline */
+	background-color: #cfe6ff;
+	/* Let the box grow with the timeline content */
+	padding: 20px 12px;
+	/* Make the box narrower and center it */
+	width: 70%;
+	margin: 12px auto;
+	border-radius: 2px;
+}
 
-	/* Allow horizontal scrolling */
-	overflow-x: auto;
-	padding: 20px;
-	scroll-behavior: smooth;
+.timeline {
+	/* Simple vertical timeline line */
+	position: relative;
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 10px 10px 10px 40px;
+}
+
+.timeline::before {
+	/* The vertical line */
+	content: "";
+	position: absolute;
+	left: 18px;
+	top: 0;
+	bottom: 0;
+	width: 4px;
+	background-color: #0b5fa5;
 }
 
 .timeline > div {
-	/* Keep each card a readable width */
-	min-width: 240px;
+	/* Timeline card */
+	position: relative;
+	margin: 16px 0;
 	background-color: #ffffff;
 	border: 2px solid #e6e6e6;
 	border-radius: 10px;
-	padding: 16px;
+	padding: 16px 16px 16px 20px;
+	min-height: 180px;
+	min-width: 325px;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.timeline > div h2 {
+	/* Tighten space below the date */
+	margin: 0 0 4px;
+}
+
+.timeline > div h3 {
+	/* Tighten space above the heading */
+	margin: 0 0 8px;
+}
+
+.timeline > div p {
+	/* Hide details until hover */
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #6aa8e6;
+	color: #ffffff;
+	padding: 12px;
+	border-radius: 10px;
+	line-height: 1.3;
+	text-align: center;
+	transition: opacity 0.4s ease;
+}
+
+
+.timeline > div::before {
+	/* The dot on the timeline */
+	content: "";
+	position: absolute;
+	left: -32px;
+	top: 20px;
+	width: 12px;
+	height: 12px;
+	background-color: #0b5fa5;
+	border-radius: 50%;
+}
+
+/* Large screens: horizontal, scrollable timeline */
+@media (min-width: 900px) {
+	.timeline-box {
+		/* Scroll on the container so the line spans all cards */
+		overflow-x: auto;
+		scroll-behavior: smooth;
+		/* Snap only when scrolling ends */
+		scroll-snap-type: x proximity;
+		scroll-snap-stop: normal;
+		scroll-padding-left: 20px;
+		/* Make space to show 4 cards at once */
+		width: 1140px;
+		max-width: 95%;
+		cursor: grab;
+	}
+
+	.timeline-box.is-dragging {
+		/* Prevent text selection while dragging */
+		cursor: grabbing;
+		user-select: none;
+	}
+
+	.timeline-box.is-dragging * {
+		user-select: none;
+	}
+
+	.timeline {
+		/* Lay cards in a row and allow scrolling */
+		display: inline-flex;
+		gap: 20px;
+		padding: 40px 20px 20px;
+		max-width: none;
+		width: max-content;
+	}
+
+	.timeline::before {
+		/* The horizontal line */
+		left: 0;
+		right: 0;
+		top: 20px;
+		bottom: auto;
+		height: 4px;
+		width: auto;
+	}
+
+	.timeline > div {
+		/* Keep each card a readable width */
+		max-width: 230px;
+		margin: 0;
+		scroll-snap-align: start;
+	}
+
+	.timeline > div::before {
+		/* Dot sits above each card */
+		left: 20px;
+		top: -18px;
+	}
+
+	.timeline > div:hover p {
+		/* Show details on hover (large screens) */
+		opacity: 1;
+		visibility: visible;
+		background-color: #5aa4e6;
+		color: #ffffff;
+		font-size: 18px;
+	}
+
+	.timeline > div:hover {
+		/* Shade the card blue on hover (large screens) */
+		background-color: #5aa4e6;
+		border-color: #5aa4e6;
+	}
+}
+
+/* Small screens: cards fit the screen */
+@media (max-width: 899px) {
+	.timeline-box {
+		width: 95%;
+	}
+
+	.timeline > div {
+		min-width: 0;
+		width: 100%;
+		min-height: 260px;
+	}
+
+	.timeline > div h2 {
+		font-size: 28px;
+	}
+
+	.timeline > div h3 {
+		font-size: 20px;
+	}
+
+	.timeline > div p {
+		font-size: 18px;
+	}
+
+	.timeline > div.is-active p {
+		/* Show details on click (small screens) */
+		opacity: 1;
+		visibility: visible;
+		background-color: #5aa4e6;
+		color: #ffffff;
+		font-size: 18px;
+	}
+
+	.timeline > div.is-active {
+		/* Shade the card blue on click (small screens) */
+		background-color: #5aa4e6;
+		border-color: #5aa4e6;
+	}
 }
