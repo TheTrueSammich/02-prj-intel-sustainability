@@ -9,7 +9,7 @@
 <body>
 
   <!-- Header / Hero Section -->
-  <header>
+  <header class="hero">
     <div>
       <!-- Ask Copilot to teach you about `.svg`. 🙂 You'll need to resize the logo with CSS. -->
       <img src="img/intel-header-logo.svg" alt="Intel Logo" />
@@ -20,15 +20,19 @@
 
       <!-- Subheading / Description -->
       <p>
-        Explore Intel's journey through time, discovering how our commitment
-        to innovation has shaped a more sustainable future for technology 
-        and our planet.
+        Explore Intel's journey through time.
+      </p>
+      <p>
+        Discover how our commitment to innovation shapes a sustainable future.
+      </p>
+      <p>
+        Technology, people, and our planet work together.
       </p>
     </div>
   </header>
 
   <!-- Timeline Cards Section -->
-  <section>
+  <section class="timeline">
 
     <!-- Card 1: 1968 -->
     <div>
@@ -139,5 +143,118 @@
     </div>
   </section>
   <p>Scroll to view timeline | Hover over cards to learn more!</p>
+
+  <script>
+    // Click-and-drag scrolling for the timeline
+    const timeline = document.querySelector(".timeline");
+    const cards = timeline ? Array.from(timeline.querySelectorAll("div")) : [];
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let scrollTimeout;
+    let isAnimating = false;
+    let lastScrollLeft = 0;
+    let lastDirection = 0;
+
+    // Gently snap to the nearest card
+    const animateScrollTo = (targetLeft, duration) => {
+      if (!timeline) {
+        return;
+      }
+      const startLeft = timeline.scrollLeft;
+      const distance = targetLeft - startLeft;
+      const startTime = performance.now();
+      isAnimating = true;
+
+      const step = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        timeline.scrollLeft = startLeft + distance * eased;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          isAnimating = false;
+        }
+      };
+
+      requestAnimationFrame(step);
+    };
+
+    const snapToNearestCard = () => {
+      if (!timeline || cards.length === 0) {
+        return;
+      }
+      const currentScroll = timeline.scrollLeft;
+      let searchCards = cards;
+
+      if (lastDirection > 0) {
+        searchCards = cards.filter((card) => card.offsetLeft >= currentScroll);
+      } else if (lastDirection < 0) {
+        searchCards = cards.filter((card) => card.offsetLeft <= currentScroll);
+      }
+
+      if (searchCards.length === 0) {
+        searchCards = cards;
+      }
+
+      let nearestCard = searchCards[0];
+      let smallestDistance = Math.abs(searchCards[0].offsetLeft - currentScroll);
+
+      searchCards.forEach((card) => {
+        const distance = Math.abs(card.offsetLeft - currentScroll);
+        if (distance < smallestDistance) {
+          smallestDistance = distance;
+          nearestCard = card;
+        }
+      });
+
+      animateScrollTo(nearestCard.offsetLeft, 300);
+    };
+
+    timeline.addEventListener("mousedown", (event) => {
+      isDragging = true;
+      startX = event.pageX - timeline.offsetLeft;
+      startScrollLeft = timeline.scrollLeft;
+      timeline.classList.add("is-dragging");
+    });
+
+    timeline.addEventListener("mouseleave", () => {
+      isDragging = false;
+      timeline.classList.remove("is-dragging");
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(snapToNearestCard, 120);
+    });
+
+    timeline.addEventListener("mouseup", () => {
+      isDragging = false;
+      timeline.classList.remove("is-dragging");
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(snapToNearestCard, 120);
+    });
+
+    timeline.addEventListener("mousemove", (event) => {
+      if (!isDragging || isAnimating) {
+        return;
+      }
+      event.preventDefault();
+      const x = event.pageX - timeline.offsetLeft;
+      const walk = x - startX;
+      timeline.scrollLeft = startScrollLeft - walk;
+    });
+
+    // Track scroll direction while moving through the timeline
+    timeline.addEventListener("scroll", () => {
+      lastDirection = timeline.scrollLeft - lastScrollLeft;
+      lastScrollLeft = timeline.scrollLeft;
+    });
+
+    // Convert mouse wheel to horizontal scroll
+    timeline.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      timeline.scrollLeft += event.deltaY;
+    });
+  </script>
 </body>
 </html>
