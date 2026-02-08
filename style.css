@@ -13,6 +13,10 @@ body {
 	color: #ffffff;
 	font-weight: 700;
 	background-color: #0b5fa5;
+	/* Use flexbox to keep hero content centered */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .hero img {
@@ -50,6 +54,10 @@ body {
 	max-width: 700px;
 	margin: 0 auto;
 	padding: 10px 10px 10px 40px;
+	/* Flex layout: stacked by default */
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
 
 .timeline::before {
@@ -134,8 +142,8 @@ body {
 	margin: 6px 0;
 }
 
-/* Large screens (1200px+): horizontal, scrollable timeline */
-@media (min-width: 1200px) {
+/* Large screens (1200px+ width OR height): horizontal, scrollable timeline */
+@media (min-width: 1200px), (min-height: 1200px) {
 	.timeline-box {
 		/* Scroll on the container so the line spans all cards */
 		overflow-x: auto;
@@ -163,6 +171,7 @@ body {
 	.timeline {
 		/* Lay cards in a row and allow scrolling */
 		display: inline-flex;
+		flex-direction: row;
 		gap: 20px;
 		padding: 40px 20px 20px;
 		max-width: none;
@@ -200,15 +209,30 @@ body {
 		font-size: 18px;
 	}
 
+	.timeline-card.is-active p {
+		/* Show details on click (large screens) */
+		opacity: 1;
+		visibility: visible;
+		background-color: #5aa4e6;
+		color: #ffffff;
+		font-size: 18px;
+	}
+
 	.timeline-card:hover {
 		/* Shade the card blue on hover (large screens) */
+		background-color: #5aa4e6;
+		border-color: #5aa4e6;
+	}
+
+	.timeline-card.is-active {
+		/* Shade the card blue on click (large screens) */
 		background-color: #5aa4e6;
 		border-color: #5aa4e6;
 	}
 }
 
 /* Smaller screens: cards fit the screen */
-@media (max-width: 1199px) {
+@media (max-width: 1199px) and (max-height: 1199px) {
 	.timeline-box {
 		width: 95%;
 	}
