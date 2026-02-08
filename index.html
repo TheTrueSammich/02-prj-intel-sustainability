@@ -153,18 +153,38 @@
   <script>
     // Allow the mouse wheel to scroll the horizontal timeline on large screens
     const timelineBox = document.querySelector(".timeline-box");
-    const mediaQuery = window.matchMedia("(min-width: 1200px) and (min-height: 1200px)");
+    const mediaQuery = window.matchMedia("(min-width: 1200px)");
     const timelineCards = document.querySelectorAll(".timeline-card");
 
     if (timelineBox) {
+      const timeline = document.querySelector(".timeline");
+      const cards = Array.from(timelineCards);
+
+      const scrollToCard = (index) => {
+        const card = cards[index];
+        if (!card) {
+          return;
+        }
+
+        const targetLeft = card.offsetLeft - 20;
+        timelineBox.scrollTo({ left: targetLeft, behavior: "smooth" });
+      };
+
       timelineBox.addEventListener("wheel", (event) => {
-        if (!mediaQuery.matches) {
+        if (!mediaQuery.matches || !timeline || cards.length === 0) {
           return;
         }
 
         if (timelineBox.scrollWidth > timelineBox.clientWidth) {
           event.preventDefault();
-          timelineBox.scrollLeft += event.deltaY;
+          const direction = event.deltaY > 0 ? 1 : -1;
+          const currentIndex = cards.reduce((closestIndex, card, index) => {
+            const currentDistance = Math.abs(card.offsetLeft - timelineBox.scrollLeft);
+            const closestDistance = Math.abs(cards[closestIndex].offsetLeft - timelineBox.scrollLeft);
+            return currentDistance < closestDistance ? index : closestIndex;
+          }, 0);
+          const nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+          scrollToCard(nextIndex);
         }
       }, { passive: false });
 

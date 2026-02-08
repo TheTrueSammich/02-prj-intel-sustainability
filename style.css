@@ -113,12 +113,13 @@ body {
 	/* The dot on the timeline */
 	content: "";
 	position: absolute;
-	left: -32px;
+	left: 50%;
 	top: 20px;
 	width: 12px;
 	height: 12px;
 	background-color: #0b5fa5;
 	border-radius: 50%;
+	transform: translateX(-50%);
 }
 
 .timeline-instructions {
@@ -133,8 +134,8 @@ body {
 	margin: 6px 0;
 }
 
-/* Large screens (1200x1200+): horizontal, scrollable timeline */
-@media (min-width: 1200px) and (min-height: 1200px) {
+/* Large screens (1200px+): horizontal, scrollable timeline */
+@media (min-width: 1200px) {
 	.timeline-box {
 		/* Scroll on the container so the line spans all cards */
 		overflow-x: auto;
@@ -187,7 +188,6 @@ body {
 
 	.timeline-card::before {
 		/* Dot sits above each card */
-		left: 20px;
 		top: -25px;
 	}
 
@@ -208,7 +208,7 @@ body {
 }
 
 /* Smaller screens: cards fit the screen */
-@media (max-width: 1199px), (max-height: 1199px) {
+@media (max-width: 1199px) {
 	.timeline-box {
 		width: 95%;
 	}
